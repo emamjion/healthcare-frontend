@@ -1,3 +1,4 @@
+"use client";
 import assets from "@/assets";
 import {
   Box,
@@ -10,21 +11,46 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+
+interface IPatientData {
+  name: string;
+  email: string;
+  contactNumber: string;
+  address: string;
+}
+
+interface IPatientRegisterFormData {
+  password: string;
+  patient: IPatientData,
+}
 
 const RegisterPage = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<IPatientRegisterFormData>();
+  const onSubmit: SubmitHandler<IPatientRegisterFormData> = (data) => console.log(data);
+
   return (
     <Container
       sx={{
         padding: "50px",
+        height: "100vh",
       }}
     >
       <Stack
         sx={{
           justifyContent: "center",
           alignItems: "center",
+          width: "100%",
+          height: "100%",
         }}
       >
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Box
             sx={{
               maxWidth: 600,
@@ -58,7 +84,7 @@ const RegisterPage = () => {
                     variant="outlined"
                     size="small"
                     fullWidth={true}
-                    // sx={{ width: "100%" }}
+                    {...register("patient.name")}
                   />
                 </Grid>
                 <Grid item md={6}>
@@ -68,7 +94,7 @@ const RegisterPage = () => {
                     variant="outlined"
                     size="small"
                     fullWidth={true}
-                    // sx={{ width: "100%" }}
+                    {...register("patient.email")}
                   />
                 </Grid>
                 <Grid item md={6}>
@@ -78,7 +104,7 @@ const RegisterPage = () => {
                     variant="outlined"
                     size="small"
                     fullWidth={true}
-                    // sx={{ width: "100%" }}
+                    {...register("password")}
                   />
                 </Grid>
                 <Grid item md={6}>
@@ -88,7 +114,7 @@ const RegisterPage = () => {
                     variant="outlined"
                     size="small"
                     fullWidth={true}
-                    // sx={{ width: "100%" }}
+                    {...register("patient.contactNumber")}
                   />
                 </Grid>
                 <Grid item md={6}>
@@ -98,15 +124,19 @@ const RegisterPage = () => {
                     variant="outlined"
                     size="small"
                     fullWidth={true}
-                    // sx={{ width: "100%" }}
+                    {...register("patient.address")}
                   />
                 </Grid>
               </Grid>
               <Box mt={2} textAlign="center">
-                <Button fullWidth={true}>Register</Button>
-                <Typography sx={{mt: 2}} component="p" fontWeight={400}>
+                <Button type="submit" fullWidth={true}>
+                  Register
+                </Button>
+                <Typography sx={{ mt: 2 }} component="p" fontWeight={400}>
                   Do you already have an account?{" "}
-                  <Link href={"/login"}>Login</Link>
+                  <Link className="text-blue-500 font-medium" href={"/login"}>
+                    Login
+                  </Link>
                 </Typography>
               </Box>
             </Box>
