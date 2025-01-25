@@ -1,5 +1,6 @@
 "use client";
 import assets from "@/assets";
+import { userLogin } from "@/services/actions/userLogin";
 import {
   Box,
   Button,
@@ -12,8 +13,9 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
-type Inputs = {
+export type InputFieldValues = {
   email: string;
   password: string;
 };
@@ -24,8 +26,18 @@ const LoginPage = () => {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  } = useForm<InputFieldValues>();
+  const onSubmit: SubmitHandler<InputFieldValues> = async (values) => {
+    try {
+      const response = await userLogin(values);
+      console.log(response);
+      if(response?.data?.accessToken){
+        toast.success(response?.message);
+      }
+    } catch (error: any) {
+      console.log("Error in Login: ", error.message);
+    }
+  };
 
   return (
     <Container sx={{}}>
