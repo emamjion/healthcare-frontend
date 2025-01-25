@@ -1,5 +1,7 @@
 "use client";
 import assets from "@/assets";
+import { registerPatient } from "@/services/actions/registerPatient";
+import { modifyPayload } from "@/utils/modifyFormData";
 import {
   Box,
   Button,
@@ -11,8 +13,9 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
-
+import { toast } from "sonner";
 
 interface IPatientData {
   name: string;
@@ -23,17 +26,31 @@ interface IPatientData {
 
 interface IPatientRegisterFormData {
   password: string;
-  patient: IPatientData,
+  patient: IPatientData;
 }
 
 const RegisterPage = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm<IPatientRegisterFormData>();
-  const onSubmit: SubmitHandler<IPatientRegisterFormData> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<IPatientRegisterFormData> = async (values) => {
+    const data = modifyPayload(values);
+    try {
+      const response = await registerPatient(data);
+      console.log("Register patient response: ", response);
+      if (response?.data?.id) {
+        toast.success(response?.message);
+        router.push("/login");
+      }
+    } catch (error: any) {
+      console.log("Error in registerPatient: ", error.message);
+    }
+    console.log(data);
+  };
 
   return (
     <Container

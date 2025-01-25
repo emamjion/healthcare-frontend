@@ -69,7 +69,7 @@
     "terminal.ansiWhite": "#A89984",
     "terminal.ansiYellow": "#FAC03B"
   },
-  "workbench.iconTheme": "material-icon-theme",
+  "workbench.iconTheme": "vs-seti",
   "terminal.integrated.env.windows": {},
   "material-icon-theme.folders.color": "#ff7043"
 }
