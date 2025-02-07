@@ -13,3 +13,4 @@ export const registerPatient = async (formData: FormData) => {
   const patientInfo = await response.json();
   return patientInfo;
 };
+
